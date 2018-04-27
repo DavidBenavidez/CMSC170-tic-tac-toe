@@ -151,96 +151,45 @@ public class Board extends JPanel{
 
     public boolean checkDraw(){
         // Checks if Draw
-        if(this.board[0][0].getIcon().toString() != topLeft){
-            if(this.board[0][1].getIcon().toString() != topMid){
-                if(this.board[0][2].getIcon().toString() != topRight){
-                    if(this.board[1][0].getIcon().toString() != leftMid){
-                        if(this.board[1][1].getIcon().toString() != midBox){
-                            if(this.board[1][2].getIcon().toString() != rightMid){
-                                if(this.board[2][0].getIcon().toString() != botLeft){
-                                    if(this.board[2][1].getIcon().toString() != botMid){
-                                        if(this.board[2][2].getIcon().toString() != botLeft){
-                                            return true;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        if((this.board[0][0].getIcon().toString() != topLeft) &&
+        (this.board[0][1].getIcon().toString() != topMid) &&
+        (this.board[0][2].getIcon().toString() != topRight) &&
+        (this.board[1][0].getIcon().toString() != leftMid) &&
+        (this.board[1][1].getIcon().toString() != midBox) &&
+        (this.board[1][2].getIcon().toString() != rightMid) &&
+        (this.board[2][0].getIcon().toString() != botLeft) &&
+        (this.board[2][1].getIcon().toString() != botMid) &&
+        (this.board[2][2].getIcon().toString() != botLeft)) {
+            return true;
         }
         return false;
     }
 
     public boolean checkWin(){
         // X wins
-            // diagonal left
-            if((this.board[0][0].getIcon().toString() == topLeftX) && (this.board[1][1].getIcon().toString() == midBoxX) && (this.board[2][2].getIcon().toString() == botRightX)){
+        if(((this.board[0][0].getIcon().toString() == topLeftX) && (this.board[1][1].getIcon().toString() == midBoxX) && (this.board[2][2].getIcon().toString() == botRightX)) ||  // diagonal left
+        ((this.board[0][2].getIcon().toString() == topRightX) && (this.board[1][1].getIcon().toString() == midBoxX) && (this.board[2][0].getIcon().toString() == botLeftX)) || // diagonal right
+        ((this.board[0][0].getIcon().toString() == topLeftX) && (this.board[0][1].getIcon().toString() == topMidX) && (this.board[0][2].getIcon().toString() == topRightX)) || // Top horizontal
+        ((this.board[1][0].getIcon().toString() == leftMidX) && (this.board[1][1].getIcon().toString() == midBoxX) && (this.board[1][2].getIcon().toString() == rightMidX)) || // Mid horizontal
+        ((this.board[2][0].getIcon().toString() == botLeftX) && (this.board[2][1].getIcon().toString() == botMidX) && (this.board[2][2].getIcon().toString() == botRightX)) ||  // Bot horizontal
+        ((this.board[0][0].getIcon().toString() == topLeftX) && (this.board[1][0].getIcon().toString() == leftMidX) && (this.board[2][0].getIcon().toString() == botLeftX)) || // Left Vertical
+        ((this.board[0][1].getIcon().toString() == topMidX) && (this.board[1][1].getIcon().toString() == midBoxX) && (this.board[2][1].getIcon().toString() == botMidX)) || // Mid Vertical
+        ((this.board[0][2].getIcon().toString() == topRightX) && (this.board[1][2].getIcon().toString() == rightMidX) && (this.board[2][2].getIcon().toString() == botRightX))){// Right Vertical
                 JOptionPane.showMessageDialog(null, "X wins!");
                 return true; 
-            } // diagonal right
-            else if((this.board[0][2].getIcon().toString() == topRightX) && (this.board[1][1].getIcon().toString() == midBoxX) && (this.board[2][0].getIcon().toString() == botLeftX)){
-                JOptionPane.showMessageDialog(null, "X wins!");
-                return true; 
-            } // Top horizontal
-            else if((this.board[0][0].getIcon().toString() == topLeftX) && (this.board[0][1].getIcon().toString() == topMidX) && (this.board[0][2].getIcon().toString() == topRightX)){
-                JOptionPane.showMessageDialog(null, "X wins!");
-                return true; 
-            } // Mid horizontal
-            else if((this.board[1][0].getIcon().toString() == leftMidX) && (this.board[1][1].getIcon().toString() == midBoxX) && (this.board[1][2].getIcon().toString() == rightMidX)){
-                JOptionPane.showMessageDialog(null, "X wins!");
-                return true; 
-            } // Bot horizontal
-            else if((this.board[2][0].getIcon().toString() == botLeftX) && (this.board[2][1].getIcon().toString() == botMidX) && (this.board[2][2].getIcon().toString() == botRightX)){
-                JOptionPane.showMessageDialog(null, "X wins!");
-                return true; 
-            } // Left Vertical
-            else if((this.board[0][0].getIcon().toString() == topLeftX) && (this.board[1][0].getIcon().toString() == leftMidX) && (this.board[2][0].getIcon().toString() == botLeftX)){
-                JOptionPane.showMessageDialog(null, "X wins!");
-                return true; 
-            } // Mid Vertical
-            else if((this.board[0][1].getIcon().toString() == topMidX) && (this.board[1][1].getIcon().toString() == midBoxX) && (this.board[2][1].getIcon().toString() == botMidX)){
-                JOptionPane.showMessageDialog(null, "X wins!");
-                return true; 
-            } // Right Vertical
-            else if((this.board[0][2].getIcon().toString() == topRightX) && (this.board[1][2].getIcon().toString() == rightMidX) && (this.board[2][2].getIcon().toString() == botRightX)){
-                JOptionPane.showMessageDialog(null, "X wins!");
-                return true; 
-            }
+        }
         // O wins
-            else if((this.board[0][0].getIcon().toString() == topLeftO) && (this.board[1][1].getIcon().toString() == midBoxO) && (this.board[2][2].getIcon().toString() == botRightO)){
-                JOptionPane.showMessageDialog(null, "O wins!");
-                return true; 
-            } // diagonal right
-            else if((this.board[0][2].getIcon().toString() == topRightO) && (this.board[1][1].getIcon().toString() == midBoxO) && (this.board[2][0].getIcon().toString() == botLeftO)){
-                JOptionPane.showMessageDialog(null, "O wins!");
-                return true; 
-            } // Top horizontal
-            else if((this.board[0][0].getIcon().toString() == topLeftO) && (this.board[0][1].getIcon().toString() == topMidO) && (this.board[0][2].getIcon().toString() == topRightO)){
-                JOptionPane.showMessageDialog(null, "O wins!");
-                return true; 
-            } // Mid horizontal
-            else if((this.board[1][0].getIcon().toString() == leftMidO) && (this.board[1][1].getIcon().toString() == midBoxO) && (this.board[1][2].getIcon().toString() == rightMidO)){
-                JOptionPane.showMessageDialog(null, "O wins!");
-                return true; 
-            } // Bot horizontal
-            else if((this.board[2][0].getIcon().toString() == botLeftO) && (this.board[2][1].getIcon().toString() == botMidO) && (this.board[2][2].getIcon().toString() == botRightO)){
-                JOptionPane.showMessageDialog(null, "O wins!");
-                return true; 
-            } // Left Vertical
-            else if((this.board[0][0].getIcon().toString() == topLeftO) && (this.board[1][0].getIcon().toString() == leftMidO) && (this.board[2][0].getIcon().toString() == botLeftO)){
-                JOptionPane.showMessageDialog(null, "O wins!");
-                return true; 
-            } // Mid Vertical
-            else if((this.board[0][1].getIcon().toString() == topMidO) && (this.board[1][1].getIcon().toString() == midBoxO) && (this.board[2][1].getIcon().toString() == botMidO)){
-                JOptionPane.showMessageDialog(null, "O wins!");
-                return true; 
-            } // Right Vertical
-            else if((this.board[0][2].getIcon().toString() == topRightO) && (this.board[1][2].getIcon().toString() == rightMidO) && (this.board[2][2].getIcon().toString() == botRightO)){
-                JOptionPane.showMessageDialog(null, "O wins!");
-                return true; 
-            }
+        if(((this.board[0][0].getIcon().toString() == topLeftO) && (this.board[1][1].getIcon().toString() == midBoxO) && (this.board[2][2].getIcon().toString() == botRightO)) ||  // diagonal left
+        ((this.board[0][2].getIcon().toString() == topRightO) && (this.board[1][1].getIcon().toString() == midBoxO) && (this.board[2][0].getIcon().toString() == botLeftO)) || // diagonal right
+        ((this.board[0][0].getIcon().toString() == topLeftO) && (this.board[0][1].getIcon().toString() == topMidO) && (this.board[0][2].getIcon().toString() == topRightO)) || // Top horizontal
+        ((this.board[1][0].getIcon().toString() == leftMidO) && (this.board[1][1].getIcon().toString() == midBoxO) && (this.board[1][2].getIcon().toString() == rightMidO)) || // Mid horizontal
+        ((this.board[2][0].getIcon().toString() == botLeftO) && (this.board[2][1].getIcon().toString() == botMidO) && (this.board[2][2].getIcon().toString() == botRightO)) ||  // Bot horizontal
+        ((this.board[0][0].getIcon().toString() == topLeftO) && (this.board[1][0].getIcon().toString() == leftMidO) && (this.board[2][0].getIcon().toString() == botLeftO)) || // Left Vertical
+        ((this.board[0][1].getIcon().toString() == topMidO) && (this.board[1][1].getIcon().toString() == midBoxO) && (this.board[2][1].getIcon().toString() == botMidO)) || // Mid Vertical
+        ((this.board[0][2].getIcon().toString() == topRightO) && (this.board[1][2].getIcon().toString() == rightMidO) && (this.board[2][2].getIcon().toString() == botRightO))){// Right Vertical
+            JOptionPane.showMessageDialog(null, "O wins!");
+            return true; 
+        }
         if(checkDraw()){
             JOptionPane.showMessageDialog(null, "It's a draw!");
             return true;
