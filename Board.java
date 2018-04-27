@@ -40,9 +40,32 @@ public class Board extends JPanel{
     private static final String botRight = "assets/images/botright.png";
     private static final String botRightX = "assets/images/botrightX.png";
     private static final String botRightO = "assets/images/botrightO.png";
+    private static final String backgroundMusic = "assets/media/bgm.mp3";
+    private MediaPlayer mediaPlayer;
+    private MediaPlayer screamPlayer;
     private JLabel[][] board;
     private MouseListener[][] boardListeners;
     private char playerTurn;
+
+    public void startBGM(){
+		new JFXPanel();
+		Media hit = new Media(new File(backgroundMusic).toURI().toString());
+		this.mediaPlayer = new MediaPlayer(hit);
+		mediaPlayer.setOnEndOfMedia(new Runnable() {
+			public void run() {
+			  mediaPlayer.seek(Duration.ZERO);
+			}
+		});
+		this.mediaPlayer.play();
+    }
+    
+    public void startScream(){
+		new JFXPanel();
+		String bip = "./assets/media/scream.mp3";
+		Media hit = new Media(new File(bip).toURI().toString());
+		this.screamPlayer = new MediaPlayer(hit);
+		this.screamPlayer.play();
+	}
 
     public void startBoard(){
         removeAll();
@@ -306,13 +329,18 @@ public class Board extends JPanel{
                 }
             }
         }
-
-        if (checkWin()) resetBoard();
-        if (checkDraw()) resetBoard();
+        if (checkWin()){
+            resetBoard();
+            this.startScream();
+        }if (checkDraw()){
+            resetBoard();
+            this.startScream();
+        }
           
     }
 
     public Board(){
+        startBGM();
         startBoard();
         generateListeners();
 
