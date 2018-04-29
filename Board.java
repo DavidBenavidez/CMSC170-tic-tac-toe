@@ -108,6 +108,47 @@ public class Board extends JPanel{
             add(this.board[2][2]);
     }
     
+    public char[][] toChar(JLabel[][] board){
+        char[][] charBoard = new char[3][3];
+        if(board[0][0].getIcon().toString() == topLeftX) charBoard[0][0] = 'X';
+        if(board[0][0].getIcon().toString() == topLeftO) charBoard[0][0] = 'O';
+        else charBoard[0][0] = '';
+        
+        if(board[0][1].getIcon().toString() == topMidX) charBoard[0][1] = 'X';
+        if(board[0][1].getIcon().toString() == topMidO) charBoard[0][1] = 'O';
+        else charBoard[0][1] = '';
+        
+        if(board[0][2].getIcon().toString() == topRightX) charBoard[0][2] = 'X';
+        if(board[0][2].getIcon().toString() == topRightO) charBoard[0][2] = 'O';
+        else charBoard[0][2] = '';
+        
+        if(board[1][0].getIcon().toString() == leftMidX) charBoard[1][0] = 'X';
+        if(board[1][0].getIcon().toString() == leftMidO) charBoard[1][0] = 'O';
+        else charBoard[1][0] = '';
+        
+        if(board[1][1].getIcon().toString() == midBoxX) charBoard[1][1] = 'X';
+        if(board[1][1].getIcon().toString() == midBoxO) charBoard[1][1] = 'O';
+        else charBoard[1][1] = '';
+        
+        if(board[1][2].getIcon().toString() == rightMidX) charBoard[1][2] = 'X';
+        if(board[1][2].getIcon().toString() == rightMidO) charBoard[1][2] = 'O';
+        else charBoard[1][2] = '';
+        
+        if(board[2][0].getIcon().toString() == botLeftX) charBoard[2][0] = 'X';
+        if(board[2][0].getIcon().toString() == botLeftO) charBoard[2][0] = 'O';
+        else charBoard[2][0] = '';
+        
+        if(board[2][1].getIcon().toString() == botMidX) charBoard[2][1] = 'X';
+        if(board[2][1].getIcon().toString() == botMidO) charBoard[2][1] = 'O';
+        else charBoard[2][1] = '';
+        
+        if(board[2][2].getIcon().toString() == botRightX) charBoard[2][2] = 'X';
+        if(board[2][2].getIcon().toString() == botRightO) charBoard[2][2] = 'O';
+        else charBoard[2][2] = '';
+        
+        return charBoard;
+    }
+
     public void generateListeners(){
         this.boardListeners = new MouseListener[3][3];
         for(int i = 0; i < 3; i++){
@@ -118,10 +159,11 @@ public class Board extends JPanel{
                     public void mouseClicked(MouseEvent e){
                         if(playerTurn == 'X'){
                             replaceIcon(iValue, jValue,'X');
-                            playerTurn = 'O';
+                            // MiniMax minimax = new MiniMax(toChar(this.Board), 'O');
+                            playerTurn = 'O'; // minimax here
                         }else{
                             replaceIcon(iValue, jValue,'O');
-                            playerTurn = 'X';
+                            playerTurn = 'X'; // minimax here
                         }
                     }
                     public void mouseEntered(MouseEvent e){}
@@ -289,6 +331,13 @@ public class Board extends JPanel{
     }
 
     public Board(){
+        // Randomize turn
+        // Random r = new Random();
+        // int num = r.nextInt(2);
+        // if(num == 1) playerTurn = 'X';
+        // else playerTurn = 'O';
+        playerTurn = 'X';
+
         startBGM();
         startBoard();
         generateListeners();
@@ -299,3 +348,5 @@ public class Board extends JPanel{
 		this.setVisible(true);
     }
 }
+
+// Reference: https://medium.freecodecamp.org/how-to-make-your-tic-tac-toe-game-unbeatable-by-using-the-minimax-algorithm-9d690bad4b37
