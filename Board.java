@@ -112,39 +112,39 @@ public class Board extends JPanel{
         char[][] charBoard = new char[3][3];
         if(board[0][0].getIcon().toString() == topLeftX) charBoard[0][0] = 'X';
         if(board[0][0].getIcon().toString() == topLeftO) charBoard[0][0] = 'O';
-        else charBoard[0][0] = '';
+        else charBoard[0][0] = ' ';
         
         if(board[0][1].getIcon().toString() == topMidX) charBoard[0][1] = 'X';
         if(board[0][1].getIcon().toString() == topMidO) charBoard[0][1] = 'O';
-        else charBoard[0][1] = '';
+        else charBoard[0][1] = ' ';
         
         if(board[0][2].getIcon().toString() == topRightX) charBoard[0][2] = 'X';
         if(board[0][2].getIcon().toString() == topRightO) charBoard[0][2] = 'O';
-        else charBoard[0][2] = '';
+        else charBoard[0][2] = ' ';
         
         if(board[1][0].getIcon().toString() == leftMidX) charBoard[1][0] = 'X';
         if(board[1][0].getIcon().toString() == leftMidO) charBoard[1][0] = 'O';
-        else charBoard[1][0] = '';
+        else charBoard[1][0] = ' ';
         
         if(board[1][1].getIcon().toString() == midBoxX) charBoard[1][1] = 'X';
         if(board[1][1].getIcon().toString() == midBoxO) charBoard[1][1] = 'O';
-        else charBoard[1][1] = '';
+        else charBoard[1][1] = ' ';
         
         if(board[1][2].getIcon().toString() == rightMidX) charBoard[1][2] = 'X';
         if(board[1][2].getIcon().toString() == rightMidO) charBoard[1][2] = 'O';
-        else charBoard[1][2] = '';
+        else charBoard[1][2] = ' ';
         
         if(board[2][0].getIcon().toString() == botLeftX) charBoard[2][0] = 'X';
         if(board[2][0].getIcon().toString() == botLeftO) charBoard[2][0] = 'O';
-        else charBoard[2][0] = '';
+        else charBoard[2][0] = ' ';
         
         if(board[2][1].getIcon().toString() == botMidX) charBoard[2][1] = 'X';
         if(board[2][1].getIcon().toString() == botMidO) charBoard[2][1] = 'O';
-        else charBoard[2][1] = '';
+        else charBoard[2][1] = ' ';
         
         if(board[2][2].getIcon().toString() == botRightX) charBoard[2][2] = 'X';
         if(board[2][2].getIcon().toString() == botRightO) charBoard[2][2] = 'O';
-        else charBoard[2][2] = '';
+        else charBoard[2][2] = ' ';
         
         return charBoard;
     }
