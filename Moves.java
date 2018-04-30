@@ -3,5 +3,6 @@ public class Moves{
     public int[] pos;
     public char index;
     public Moves(){
+        this.pos = new int[2];
     }
 }

@@ -46,6 +46,7 @@ public class Board extends JPanel{
     private JLabel[][] board;
     private MouseListener[][] boardListeners;
     private char playerTurn;
+    private int numTurns;
 
     public void startBGM(){
 		new JFXPanel();
@@ -111,41 +112,41 @@ public class Board extends JPanel{
     public char[][] toChar(JLabel[][] board){
         char[][] charBoard = new char[3][3];
         if(board[0][0].getIcon().toString() == topLeftX) charBoard[0][0] = 'X';
-        if(board[0][0].getIcon().toString() == topLeftO) charBoard[0][0] = 'O';
+        else if(board[0][0].getIcon().toString() == topLeftO) charBoard[0][0] = 'O';
         else charBoard[0][0] = ' ';
         
         if(board[0][1].getIcon().toString() == topMidX) charBoard[0][1] = 'X';
-        if(board[0][1].getIcon().toString() == topMidO) charBoard[0][1] = 'O';
+        else if(board[0][1].getIcon().toString() == topMidO) charBoard[0][1] = 'O';
         else charBoard[0][1] = ' ';
         
         if(board[0][2].getIcon().toString() == topRightX) charBoard[0][2] = 'X';
-        if(board[0][2].getIcon().toString() == topRightO) charBoard[0][2] = 'O';
+        else if(board[0][2].getIcon().toString() == topRightO) charBoard[0][2] = 'O';
         else charBoard[0][2] = ' ';
         
         if(board[1][0].getIcon().toString() == leftMidX) charBoard[1][0] = 'X';
-        if(board[1][0].getIcon().toString() == leftMidO) charBoard[1][0] = 'O';
+        else if(board[1][0].getIcon().toString() == leftMidO) charBoard[1][0] = 'O';
         else charBoard[1][0] = ' ';
         
         if(board[1][1].getIcon().toString() == midBoxX) charBoard[1][1] = 'X';
-        if(board[1][1].getIcon().toString() == midBoxO) charBoard[1][1] = 'O';
+        else if(board[1][1].getIcon().toString() == midBoxO) charBoard[1][1] = 'O';
         else charBoard[1][1] = ' ';
         
         if(board[1][2].getIcon().toString() == rightMidX) charBoard[1][2] = 'X';
-        if(board[1][2].getIcon().toString() == rightMidO) charBoard[1][2] = 'O';
+        else if(board[1][2].getIcon().toString() == rightMidO) charBoard[1][2] = 'O';
         else charBoard[1][2] = ' ';
         
         if(board[2][0].getIcon().toString() == botLeftX) charBoard[2][0] = 'X';
-        if(board[2][0].getIcon().toString() == botLeftO) charBoard[2][0] = 'O';
+        else if(board[2][0].getIcon().toString() == botLeftO) charBoard[2][0] = 'O';
         else charBoard[2][0] = ' ';
         
         if(board[2][1].getIcon().toString() == botMidX) charBoard[2][1] = 'X';
-        if(board[2][1].getIcon().toString() == botMidO) charBoard[2][1] = 'O';
+        else if(board[2][1].getIcon().toString() == botMidO) charBoard[2][1] = 'O';
         else charBoard[2][1] = ' ';
-        
+            
         if(board[2][2].getIcon().toString() == botRightX) charBoard[2][2] = 'X';
-        if(board[2][2].getIcon().toString() == botRightO) charBoard[2][2] = 'O';
+        else if(board[2][2].getIcon().toString() == botRightO) charBoard[2][2] = 'O';
         else charBoard[2][2] = ' ';
-        
+
         return charBoard;
     }
 
@@ -155,12 +156,14 @@ public class Board extends JPanel{
             for(int j = 0; j < 3; j++){
                 final int iValue = i;
                 final int jValue = j;
+                final int numTurnsVal = this.numTurns;
+                final JLabel[][] newBoard= this.board;
                 this.boardListeners[i][j] = new MouseListener(){
                     public void mouseClicked(MouseEvent e){
                         if(playerTurn == 'X'){
                             replaceIcon(iValue, jValue,'X');
-                            // MiniMax minimax = new MiniMax(toChar(this.Board), 'O');
-                            playerTurn = 'O'; // minimax here
+                            MiniMax minimax = new MiniMax(numTurnsVal, toChar(newBoard), 'O');
+                            replaceIcon(minimax.bestMove.pos[0], minimax.bestMove.pos[1],'O');
                         }else{
                             replaceIcon(iValue, jValue,'O');
                             playerTurn = 'X'; // minimax here
@@ -201,7 +204,7 @@ public class Board extends JPanel{
         (this.board[1][2].getIcon().toString() != rightMid) &&
         (this.board[2][0].getIcon().toString() != botLeft) &&
         (this.board[2][1].getIcon().toString() != botMid) &&
-        (this.board[2][2].getIcon().toString() != botLeft)) {
+        (this.board[2][2].getIcon().toString() != botRight)) {
             return true;
         }
         return false;
@@ -241,6 +244,7 @@ public class Board extends JPanel{
     }
 
     public void replaceIcon(int i, int j, char turn){
+        this.numTurns++;
         if(i == 0){
             if(j == 0){
                 if(this.board[i][j].getIcon().toString() == topLeft){
@@ -321,9 +325,11 @@ public class Board extends JPanel{
             }
         }
         if (checkWin()){
+            this.numTurns = 0;
             resetBoard();
             this.startScream();
         }if (checkDraw()){
+            this.numTurns = 0;
             resetBoard();
             this.startScream();
         }
@@ -331,6 +337,7 @@ public class Board extends JPanel{
     }
 
     public Board(){
+        this.numTurns = 0;
         // Randomize turn
         // Random r = new Random();
         // int num = r.nextInt(2);
