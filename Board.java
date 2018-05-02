@@ -46,7 +46,6 @@ public class Board extends JPanel{
     private JLabel[][] board;
     private MouseListener[][] boardListeners;
     private char playerTurn;
-    private int numTurns;
 
     public void startBGM(){
 		new JFXPanel();
@@ -156,18 +155,12 @@ public class Board extends JPanel{
             for(int j = 0; j < 3; j++){
                 final int iValue = i;
                 final int jValue = j;
-                final int numTurnsVal = this.numTurns;
-                final JLabel[][] newBoard= this.board;
+                final JLabel[][] newBoard = this.board;
                 this.boardListeners[i][j] = new MouseListener(){
                     public void mouseClicked(MouseEvent e){
-                        if(playerTurn == 'X'){
-                            replaceIcon(iValue, jValue,'X');
-                            MiniMax minimax = new MiniMax(numTurnsVal, toChar(newBoard), 'O');
-                            replaceIcon(minimax.bestMove.pos[0], minimax.bestMove.pos[1],'O');
-                        }else{
-                            replaceIcon(iValue, jValue,'O');
-                            playerTurn = 'X'; // minimax here
-                        }
+                        replaceIcon(iValue, jValue,'X');
+                        MiniMax minimax = new MiniMax(toChar(newBoard), 'O');
+                        replaceIcon(minimax.bestMove.xPos, minimax.bestMove.yPos,'O');
                     }
                     public void mouseEntered(MouseEvent e){}
                     public void mouseExited(MouseEvent e){}
@@ -180,7 +173,7 @@ public class Board extends JPanel{
     }
 
     public void resetBoard(){
-        // Generate Initial Board
+        // Resets board to empty boxes
             this.board[0][0].setIcon(new ImageIcon(topLeft));
             this.board[0][1].setIcon(new ImageIcon(topMid));
             this.board[0][2].setIcon(new ImageIcon(topRight));
@@ -232,19 +225,17 @@ public class Board extends JPanel{
         ((this.board[0][0].getIcon().toString() == topLeftO) && (this.board[1][0].getIcon().toString() == leftMidO) && (this.board[2][0].getIcon().toString() == botLeftO)) || // Left Vertical
         ((this.board[0][1].getIcon().toString() == topMidO) && (this.board[1][1].getIcon().toString() == midBoxO) && (this.board[2][1].getIcon().toString() == botMidO)) || // Mid Vertical
         ((this.board[0][2].getIcon().toString() == topRightO) && (this.board[1][2].getIcon().toString() == rightMidO) && (this.board[2][2].getIcon().toString() == botRightO))){// Right Vertical
-            JOptionPane.showMessageDialog(null, "O wins!");
+            JOptionPane.showMessageDialog(null, "Oops");
             return true; 
         }
         if(checkDraw()){
-            JOptionPane.showMessageDialog(null, "It's a draw!");
+            JOptionPane.showMessageDialog(null, "Draw! manalo ka naman :(");
             return true;
         }
-
         return false;
     }
 
     public void replaceIcon(int i, int j, char turn){
-        this.numTurns++;
         if(i == 0){
             if(j == 0){
                 if(this.board[i][j].getIcon().toString() == topLeft){
@@ -325,11 +316,9 @@ public class Board extends JPanel{
             }
         }
         if (checkWin()){
-            this.numTurns = 0;
             resetBoard();
             this.startScream();
         }if (checkDraw()){
-            this.numTurns = 0;
             resetBoard();
             this.startScream();
         }
@@ -337,23 +326,22 @@ public class Board extends JPanel{
     }
 
     public Board(){
-        this.numTurns = 0;
-        // Randomize turn
-        // Random r = new Random();
-        // int num = r.nextInt(2);
-        // if(num == 1) playerTurn = 'X';
-        // else playerTurn = 'O';
-        playerTurn = 'X';
-
         startBGM();
         startBoard();
         generateListeners();
 
+        // Randomize turn
+        Random r = new Random();
+        int num = r.nextInt(2);
+        if(num == 1) playerTurn = 'X';
+        else{
+            MiniMax minimax = new MiniMax(toChar(this.board), 'O');
+            replaceIcon(minimax.bestMove.xPos, minimax.bestMove.yPos,'O');
+            playerTurn = 'X';
+        }
         this.setLayout(new GridLayout(3, 3)); // GridLayout will arrange elements in Grid Manager 8 X 8
 		this.setSize(750, 750);
 		this.setFocusable(true);
 		this.setVisible(true);
     }
 }
-
-// Reference: https://medium.freecodecamp.org/how-to-make-your-tic-tac-toe-game-unbeatable-by-using-the-minimax-algorithm-9d690bad4b37

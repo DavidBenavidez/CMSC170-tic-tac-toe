@@ -1,132 +1,141 @@
 import java.util.*;
 import java.io.*;
 
-public class MiniMax{
-    public Moves bestMove;
-    private char[][] board;
-    private char player;
-    private int numTurns;
+class Position {
+    int xPos, yPos;
+    public Position(int xPos, int yPos){
+        this.xPos = xPos;
+        this.yPos = yPos;
+    }
+}
 
-    public boolean winning(char player){
-        // X wins
-        if(((this.board[0][0] == player) && (this.board[1][1] == player) && (this.board[2][2] == player)) ||  // diagonal left
-        ((this.board[0][2] == player) && (this.board[1][1] == player) && (this.board[2][0] == player)) || // diagonal right
-        ((this.board[0][0] == player) && (this.board[0][1] == player) && (this.board[0][2] == player)) || // Top horizontal
-        ((this.board[1][0] == player) && (this.board[1][1] == player) && (this.board[1][2] == player)) || // Mid horizontal
-        ((this.board[2][0] == player) && (this.board[2][1] == player) && (this.board[2][2] == player)) ||  // Bot horizontal
-        ((this.board[0][0] == player) && (this.board[1][0] == player) && (this.board[2][0] == player)) || // Left Vertical
-        ((this.board[0][1] == player) && (this.board[1][1] == player) && (this.board[2][1] == player)) || // Mid Vertical
-        ((this.board[0][2] == player) && (this.board[1][2] == player) && (this.board[2][2] == player))){// Right Vertical
+
+class pointScore{
+    int score;
+    Position pos;
+    pointScore(int score, Position pos){
+        this.score = score;
+        this.pos = pos;
+    }
+}
+
+public class MiniMax{
+    public Position bestMove;
+    private char[][] board;
+    private char currentPlayer;
+    private int numTurns;
+    private ArrayList<pointScore> rootsChildrenScores;
+
+    public boolean winning(char player, char[][] newGameBoard){
+        if(((newGameBoard[0][0] == player) && (newGameBoard[1][1] == player) && (newGameBoard[2][2] == player)) ||  // diagonal left
+        ((newGameBoard[0][2] == player) && (newGameBoard[1][1] == player) && (newGameBoard[2][0] == player)) ||     // diagonal right
+        ((newGameBoard[0][0] == player) && (newGameBoard[0][1] == player) && (newGameBoard[0][2] == player)) ||     // Top horizontal
+        ((newGameBoard[1][0] == player) && (newGameBoard[1][1] == player) && (newGameBoard[1][2] == player)) ||     // Mid horizontal
+        ((newGameBoard[2][0] == player) && (newGameBoard[2][1] == player) && (newGameBoard[2][2] == player)) ||     // Bot horizontal
+        ((newGameBoard[0][0] == player) && (newGameBoard[1][0] == player) && (newGameBoard[2][0] == player)) ||     // Left Vertical
+        ((newGameBoard[0][1] == player) && (newGameBoard[1][1] == player) && (newGameBoard[2][1] == player)) ||     // Mid Vertical
+        ((newGameBoard[0][2] == player) && (newGameBoard[1][2] == player) && (newGameBoard[2][2] == player))){      // Right Vertical
             return true; 
         }
         return false;
     }
 
-    public ArrayList<int[]> getEmptySpots(){
-        ArrayList<int[]> emptySpotArray = new ArrayList<int[]>();
-        int[] emptySpot = new int[2];
-
+    public ArrayList<Position> getEmptySpots(char[][] currentBoard){
+        ArrayList<Position> spotsArray = new ArrayList<Position>(); 
         for(int i = 0; i < 3; i++){
-            for(int k = 0; k < 3; k++){
-                if(board[i][k] == ' '){
-                    emptySpot = new int[2];
-                    emptySpot[0] = i;
-                    emptySpot[1] = k;
-                    emptySpotArray.add(emptySpot);
-                }   
+            for(int j = 0; j < 3; j++){
+                if(currentBoard[i][j] == ' '){
+                    Position newPoint = new Position(i, j);
+                    spotsArray.add(newPoint);
+                }
             }
         }
-        return emptySpotArray;
+        return spotsArray;
     }
 
-    public Moves getBestMove(char player){
-        // an array to collect all the objects
-        ArrayList<Moves> moves = new ArrayList<Moves>();
-        ArrayList<int[]> emptySpots = new ArrayList<int[]>(getEmptySpots());
-        Moves move = new Moves();
+    public int returnMin(ArrayList<Integer> list){
+        int min = 10000;
+        int index = -1;
+        for (int i = 0; i < list.size(); ++i) {
+            if (list.get(i) < min) {
+                min = list.get(i);
+                index = i;
+            }
+        }
+        return list.get(index);
+    }
 
-        if(this.numTurns > 3){
-            if (winning('X')){
-                move.score = -10;
-                return move;
+    public int returnMax(ArrayList<Integer> list){
+        int max = -10000;
+        int index = -1;
+        for (int i = 0; i < list.size(); ++i) {
+            if (list.get(i) > max) {
+                max = list.get(i);
+                index = i;
             }
-            else if (winning('O')){
-                move.score = 10;
-                return move;
+        }
+        return list.get(index);
+    }
+
+    public Position returnBestMove(){
+        int max = -100000;
+        int best = -1;
+
+        for (int i = 0; i < rootsChildrenScores.size(); ++i) { 
+            if (max < rootsChildrenScores.get(i).score) {
+                max = rootsChildrenScores.get(i).score;
+                best = i;
             }
-            else if (emptySpots.size() == 0){
-                move.score = 0;
-                return move;
-            }
-        
-            // loop through available spots
-            for (int i = 0; i < emptySpots.size(); i++){
-                //create an object for each and store the index of that spot that was stored as a number in the object's index key
-                // Moves move = new Moves();
-                move.index = this.board[emptySpots.get(i)[0]][emptySpots.get(i)[1]];
-            
-                // set the empty spot to the current player
-                this.board[emptySpots.get(i)[0]][emptySpots.get(i)[1]] = this.player;
-            
-                //if collect the score resulted from calling minimax on the opponent of the current player
-                if (this.player == 'O'){
-                    Moves result = getBestMove('X');
-                    move.score = move.score + result.score;
-                }
-                else{
-                    Moves result = getBestMove('O');
-                    move.score = move.score + result.score;
-                }
-            
-                //reset the spot to empty
-                this.board[emptySpots.get(i)[0]][emptySpots.get(i)[1]] = move.index;
-            
-                // push the object to the array
-                move.pos = new int[2];
-                move.pos[0] = emptySpots.get(i)[0];
-                move.pos[1] = emptySpots.get(i)[1];
-                moves.add(move);
-            }
-        
-            // if it is the computer's turn loop over the moves and choose the move with the highest score
-            int bestScore = 1;
-            int bestMove = 1;
-            if(player == 'O'){
-                bestScore = -10000;
-                for(int j = 0; j < moves.size(); j++){
-                    if(moves.get(j).score > bestScore){
-                        bestScore = moves.get(j).score;
-                        bestMove = j;
-                    }
-                }
-            }else{
-            // else loop over the moves and choose the move with the lowest score
-                bestScore = 10000;
-                for(int j = 0; j < moves.size(); j++){
-                    if(moves.get(j).score < bestScore){
-                        bestScore = moves.get(j).score;
-                        bestMove = j;
-                    }
-                }
-            }
-        
-            // return the chosen move (object) from the array to the higher depth
-            return moves.get(bestMove);
-        }else{
-            System.out.println("random" + this.numTurns);
-            move.pos = new int[2];
-            move.pos[0] = emptySpots.get(0)[0];
-            move.pos[1] = emptySpots.get(0)[1];
-            return move;
         }
 
+        return rootsChildrenScores.get(best).pos;   
     }
 
-    public MiniMax(int numTurnsVal, char[][] board, char player){
-        this.numTurns = numTurnsVal;
-        this.player = player;
-        this.bestMove = new Moves();
+    public int minimaxify(int level, char currentPlayer, char[][] newBoard){
+        char[][] newGameBoard = new char[3][3];
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 3; j++){
+                newGameBoard[i][j] = newBoard[i][j];
+            }
+        }
+        
+        if(winning('O', newGameBoard)) return 1;
+        if(winning('X', newGameBoard)) return -1;
+        
+
+        ArrayList<Position> availableSpots = new ArrayList<Position>(getEmptySpots(newGameBoard));    
+        if(availableSpots.isEmpty()) return 0;
+
+        ArrayList<Integer> scores = new ArrayList<Integer>();
+
+        for(int i = 0; i < availableSpots.size(); i++){
+            Position currentSpot = availableSpots.get(i);
+
+            if(currentPlayer == 'O'){
+                newGameBoard[currentSpot.xPos][currentSpot.yPos] = 'O';
+                int currentScore = minimaxify(level + 1, 'X', newGameBoard);
+                scores.add(currentScore);
+                if(level == 0){
+                    this.rootsChildrenScores.add(new pointScore(currentScore, currentSpot ));
+                }
+            } else if (currentPlayer =='X'){
+                newGameBoard[currentSpot.xPos][currentSpot.yPos] = 'X';
+                scores.add(minimaxify(level + 1, 'O', newGameBoard));
+            }
+            newGameBoard[currentSpot.xPos][currentSpot.yPos] = ' ';            
+        }
+        return currentPlayer == 'O' ? returnMax(scores) : returnMin(scores);
+    }
+
+    public void callMiniMax(int level, char currentPlayer, char[][] newBoard){
+        this.rootsChildrenScores = new ArrayList<pointScore>();
+        minimaxify(level, currentPlayer, newBoard);    
+    }
+
+    public MiniMax(char[][] board, char player){
+        this.currentPlayer = player;
         this.board = board;
-        this.bestMove = getBestMove(this.player);
+        callMiniMax(0, this.currentPlayer, this.board);
+        this.bestMove = returnBestMove();
     }
 }
