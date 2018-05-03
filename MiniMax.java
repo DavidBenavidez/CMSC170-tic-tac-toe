@@ -87,7 +87,6 @@ public class MiniMax{
                 best = i;
             }
         }
-
         return rootsChildrenScores.get(best).pos;   
     }
 

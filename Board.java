@@ -158,9 +158,11 @@ public class Board extends JPanel{
                 final JLabel[][] newBoard = this.board;
                 this.boardListeners[i][j] = new MouseListener(){
                     public void mouseClicked(MouseEvent e){
-                        replaceIcon(iValue, jValue,'X');
-                        MiniMax minimax = new MiniMax(toChar(newBoard), 'O');
-                        replaceIcon(minimax.bestMove.xPos, minimax.bestMove.yPos,'O');
+                        if(toChar(newBoard)[iValue][jValue] == ' '){
+                            replaceIcon(iValue, jValue,'X');
+                            MiniMax minimax = new MiniMax(toChar(newBoard), 'O');
+                            replaceIcon(minimax.bestMove.xPos, minimax.bestMove.yPos,'O');
+                        }
                     }
                     public void mouseEntered(MouseEvent e){}
                     public void mouseExited(MouseEvent e){}
@@ -225,7 +227,10 @@ public class Board extends JPanel{
         ((this.board[0][0].getIcon().toString() == topLeftO) && (this.board[1][0].getIcon().toString() == leftMidO) && (this.board[2][0].getIcon().toString() == botLeftO)) || // Left Vertical
         ((this.board[0][1].getIcon().toString() == topMidO) && (this.board[1][1].getIcon().toString() == midBoxO) && (this.board[2][1].getIcon().toString() == botMidO)) || // Mid Vertical
         ((this.board[0][2].getIcon().toString() == topRightO) && (this.board[1][2].getIcon().toString() == rightMidO) && (this.board[2][2].getIcon().toString() == botRightO))){// Right Vertical
-            JOptionPane.showMessageDialog(null, "Oops");
+            String[] strings = new String[]{"Oops", "Get gud", "?????", "ez"};
+            Random r = new Random();
+            int num = r.nextInt(4);
+            JOptionPane.showMessageDialog(null, strings[num]);
             return true; 
         }
         if(checkDraw()){
