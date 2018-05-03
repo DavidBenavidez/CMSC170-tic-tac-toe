@@ -205,33 +205,20 @@ public class Board extends JPanel{
         return false;
     }
 
-    public boolean checkWin(){
-        // X wins
-        if(((this.board[0][0].getIcon().toString() == topLeftX) && (this.board[1][1].getIcon().toString() == midBoxX) && (this.board[2][2].getIcon().toString() == botRightX)) ||  // diagonal left
-        ((this.board[0][2].getIcon().toString() == topRightX) && (this.board[1][1].getIcon().toString() == midBoxX) && (this.board[2][0].getIcon().toString() == botLeftX)) || // diagonal right
-        ((this.board[0][0].getIcon().toString() == topLeftX) && (this.board[0][1].getIcon().toString() == topMidX) && (this.board[0][2].getIcon().toString() == topRightX)) || // Top horizontal
-        ((this.board[1][0].getIcon().toString() == leftMidX) && (this.board[1][1].getIcon().toString() == midBoxX) && (this.board[1][2].getIcon().toString() == rightMidX)) || // Mid horizontal
-        ((this.board[2][0].getIcon().toString() == botLeftX) && (this.board[2][1].getIcon().toString() == botMidX) && (this.board[2][2].getIcon().toString() == botRightX)) ||  // Bot horizontal
-        ((this.board[0][0].getIcon().toString() == topLeftX) && (this.board[1][0].getIcon().toString() == leftMidX) && (this.board[2][0].getIcon().toString() == botLeftX)) || // Left Vertical
-        ((this.board[0][1].getIcon().toString() == topMidX) && (this.board[1][1].getIcon().toString() == midBoxX) && (this.board[2][1].getIcon().toString() == botMidX)) || // Mid Vertical
-        ((this.board[0][2].getIcon().toString() == topRightX) && (this.board[1][2].getIcon().toString() == rightMidX) && (this.board[2][2].getIcon().toString() == botRightX))){// Right Vertical
-                JOptionPane.showMessageDialog(null, "X wins!");
-                return true; 
-        }
-        // O wins
-        if(((this.board[0][0].getIcon().toString() == topLeftO) && (this.board[1][1].getIcon().toString() == midBoxO) && (this.board[2][2].getIcon().toString() == botRightO)) ||  // diagonal left
-        ((this.board[0][2].getIcon().toString() == topRightO) && (this.board[1][1].getIcon().toString() == midBoxO) && (this.board[2][0].getIcon().toString() == botLeftO)) || // diagonal right
-        ((this.board[0][0].getIcon().toString() == topLeftO) && (this.board[0][1].getIcon().toString() == topMidO) && (this.board[0][2].getIcon().toString() == topRightO)) || // Top horizontal
-        ((this.board[1][0].getIcon().toString() == leftMidO) && (this.board[1][1].getIcon().toString() == midBoxO) && (this.board[1][2].getIcon().toString() == rightMidO)) || // Mid horizontal
-        ((this.board[2][0].getIcon().toString() == botLeftO) && (this.board[2][1].getIcon().toString() == botMidO) && (this.board[2][2].getIcon().toString() == botRightO)) ||  // Bot horizontal
-        ((this.board[0][0].getIcon().toString() == topLeftO) && (this.board[1][0].getIcon().toString() == leftMidO) && (this.board[2][0].getIcon().toString() == botLeftO)) || // Left Vertical
-        ((this.board[0][1].getIcon().toString() == topMidO) && (this.board[1][1].getIcon().toString() == midBoxO) && (this.board[2][1].getIcon().toString() == botMidO)) || // Mid Vertical
-        ((this.board[0][2].getIcon().toString() == topRightO) && (this.board[1][2].getIcon().toString() == rightMidO) && (this.board[2][2].getIcon().toString() == botRightO))){// Right Vertical
+    public boolean checkWin(char player, char[][] newGameBoard){
+        if(((newGameBoard[0][0] == player) && (newGameBoard[1][1] == player) && (newGameBoard[2][2] == player)) ||  // diagonal left
+        ((newGameBoard[0][2] == player) && (newGameBoard[1][1] == player) && (newGameBoard[2][0] == player)) ||     // diagonal right
+        ((newGameBoard[0][0] == player) && (newGameBoard[0][1] == player) && (newGameBoard[0][2] == player)) ||     // Top horizontal
+        ((newGameBoard[1][0] == player) && (newGameBoard[1][1] == player) && (newGameBoard[1][2] == player)) ||     // Mid horizontal
+        ((newGameBoard[2][0] == player) && (newGameBoard[2][1] == player) && (newGameBoard[2][2] == player)) ||     // Bot horizontal
+        ((newGameBoard[0][0] == player) && (newGameBoard[1][0] == player) && (newGameBoard[2][0] == player)) ||     // Left Vertical
+        ((newGameBoard[0][1] == player) && (newGameBoard[1][1] == player) && (newGameBoard[2][1] == player)) ||     // Mid Vertical
+        ((newGameBoard[0][2] == player) && (newGameBoard[1][2] == player) && (newGameBoard[2][2] == player))){      // Right Vertical
             String[] strings = new String[]{"Oops", "Get gud", "?????", "ez"};
             Random r = new Random();
             int num = r.nextInt(4);
             JOptionPane.showMessageDialog(null, strings[num]);
-            return true; 
+            return true;
         }
         if(checkDraw()){
             JOptionPane.showMessageDialog(null, "Draw! manalo ka naman :(");
@@ -320,14 +307,13 @@ public class Board extends JPanel{
                 }
             }
         }
-        if (checkWin()){
+        if (checkWin('O', toChar(this.board))){
             resetBoard();
             this.startScream();
         }if (checkDraw()){
             resetBoard();
             this.startScream();
         }
-          
     }
 
     public Board(){
