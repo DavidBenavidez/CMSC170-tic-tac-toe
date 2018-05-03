@@ -5,11 +5,10 @@
   <br/>
   Tic-Tac-Toe
   <br/>
-  <img src="https://img.shields.io/badge/status-development-yellow.svg" />
-  <img src="https://img.shields.io/badge/node-v8.3.0-green.svg" />
-  <img src="https://img.shields.io/badge/express-v^4.16.2-green.svg" />
-  <img src="https://img.shields.io/badge/mysql-v^2.15.0-green.svg" />
+  <img src="https://img.shields.io/badge/status-finished-brightgreen.svg" />
+  <img src="https://img.shields.io/badge/java-v1.8.0__121-green.svg" />
   <br/>
 </h1>
 
-# REFERENCE: http://www.codebytes.in/2014/08/minimax-algorithm-tic-tac-toe-ai-in.html
+# REFERENCE 
+http://www.codebytes.in/2014/08/minimax-algorithm-tic-tac-toe-ai-in.html
