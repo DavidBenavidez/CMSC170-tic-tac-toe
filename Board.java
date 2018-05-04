@@ -326,8 +326,7 @@ public class Board extends JPanel{
         int num = r.nextInt(2);
         if(num == 1) playerTurn = 'X';
         else{
-            MiniMax minimax = new MiniMax(toChar(this.board), 'O');
-            replaceIcon(minimax.bestMove.xPos, minimax.bestMove.yPos,'O');
+            replaceIcon(1, 1,'O');
             playerTurn = 'X';
         }
         this.setLayout(new GridLayout(3, 3)); // GridLayout will arrange elements in Grid Manager 8 X 8
